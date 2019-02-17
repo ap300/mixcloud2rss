@@ -1,5 +1,55 @@
 const Podcast = require('podcast');
+const fetch = require('node-fetch');
 
+const uri = "https://api.mixcloud.com";
+const mixcloud_user = "djmrnickHPR";
+const mixcloud_dl_uri = "http://download.mixcloud-downloader.com/d/mixcloud";
+
+async function main () {
+    let mc_user = fetch(`${uri}/${mixcloud_user}`).then(response => response.json());
+    let mc_feed = fetch(`${uri}/${mixcloud_user}/cloudcasts`).then(response => response.json());
+    
+    let user = await mc_user;
+    const feed = new Podcast({
+        title: user.name,
+        description: user.blog,
+        site_url: user.url,
+        image_url: user.pictures.extra_large,
+        //feed_url: 'http://example.com/rss.xml',
+    });
+
+    const promises = [];
+    const pods = await mc_feed;
+    const items = [];
+    for (cast of pods.data) {
+        let item = {
+            title: cast.name,
+            url: cast.url,
+            date: cast.created_time,
+            enclosure: {
+                url: mixcloud_dl_uri + cast.key
+            },
+        };
+        promises.push(updateDescription(item, cast.key));
+        items.push(item);
+    }
+
+    await Promise.all(promises);
+    items.forEach(item => feed.addItem(item));
+
+    process.stdout.write(feed.buildXml('  '));
+
+}
+
+main();
+
+function updateDescription (item, key) {
+    return fetch(`${uri}/${key}`)
+        .then(response => response.json())
+        .then(data => {
+            item.description = data.description;
+        });
+}
 
 /* lets create an rss feed */
 const feed = new Podcast({
@@ -53,4 +103,4 @@ feed.addItem({
  
 // cache the xml to send to clients
 const xml = feed.buildXml();
-process.stdout.write(xml)
+//process.stdout.write(xml)

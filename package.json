@@ -1,0 +1,14 @@
+{
+  "name": "mixcloud_rss",
+  "version": "1.0.0",
+  "description": "Mixcloud API to RSS",
+  "author": "Alex Placentra <alexp3@gmail.com>",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "podcast": "^1.1.0",
+    "node-fetch": "^2.3.0"
+  }
+}
