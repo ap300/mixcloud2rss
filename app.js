@@ -27,7 +27,7 @@ async function main () {
             url: cast.url,
             date: cast.created_time,
             enclosure: {
-                url: mixcloud_dl_uri + cast.key
+                url: mixcloud_dl_uri + cast.key + "#stream.m4a"
             },
         };
         promises.push(updateDescription(item, cast.key));
