@@ -16,6 +16,10 @@ async function main () {
         site_url: user.url,
         image_url: user.pictures.extra_large,
         //feed_url: 'http://example.com/rss.xml',
+        //itunesOwner: {
+        //    name: "DJ Mr Nick HPR",
+        //    email: "djmrnick@hawaiipublicradio.org"
+        //}
     });
 
     const promises = [];
@@ -38,6 +42,8 @@ async function main () {
     items.forEach(item => feed.addItem(item));
 
     process.stdout.write(feed.buildXml('  '));
+    console.error(pods.data[0].created_time);
+    console.error(pods.data[0].name);
 
 }
 
