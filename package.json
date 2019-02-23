@@ -2,7 +2,7 @@
   "name": "mixcloud_rss",
   "version": "1.0.0",
   "description": "Mixcloud API to RSS",
-  "author": "Alex Placentra <alexp3@gmail.com>",
+  "author": "Alex Placentra <4174301+jesusq@users.noreply.github.com>",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
