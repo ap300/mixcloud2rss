@@ -4,6 +4,7 @@ const fetch = require('node-fetch');
 const uri = "https://api.mixcloud.com";
 const mixcloud_user = "djmrnickHPR";
 const mixcloud_dl_uri = "http://download.mixcloud-downloader.com/d/mixcloud";
+const mixcloud_page_uri = "http://www.mixcloud-downloader.com/dl/mixcloud";
 
 async function main () {
     let mc_user = fetch(`${uri}/${mixcloud_user}`).then(response => response.json());
@@ -35,6 +36,7 @@ async function main () {
             },
         };
         promises.push(updateDescription(item, cast.key));
+        promises.push(updateUri(item, cast.key));
         items.push(item);
     }
 
@@ -54,6 +56,19 @@ function updateDescription (item, key) {
         .then(response => response.json())
         .then(data => {
             item.description = data.description;
+        });
+}
+
+const re_uri = /"(.*mixcloud\.com.*)"/;
+function updateUri (item, key) {
+    return fetch(`${mixcloud_page_uri}/${key}`)
+        .then(response => response.text())
+        .then(body => {
+            let result = re_uri.exec(body);
+            if (result != null) {
+                item.enclosure.url = result[1];
+                item.enclosure.type = "audio/mp4";
+            }
         });
 }
 
