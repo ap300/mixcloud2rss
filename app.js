@@ -36,7 +36,7 @@ async function main () {
             },
         };
         promises.push(updateDescription(item, cast.key));
-        //promises.push(updateUri(item, cast.key));
+        promises.push(updateUri(item, cast.key));
         items.push(item);
     }
 
